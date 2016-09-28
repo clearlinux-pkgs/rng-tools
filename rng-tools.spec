@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 1
+Release  : 2
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -76,7 +76,9 @@ mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/rngd.service
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rngd.service
+ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/rngd.service
 ## make_install_append end
 
 %files
@@ -91,6 +93,7 @@ ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wan
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system/multi-user.target.wants/rngd.service
 /usr/lib/systemd/system/rngd.service
+/usr/lib/systemd/system/update-triggers.target.wants/rngd.service
 
 %files doc
 %defattr(-,root,root,-)
