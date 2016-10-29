@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 2
+Release  : 3
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -15,6 +15,7 @@ Requires: rng-tools-bin
 Requires: rng-tools-config
 Requires: rng-tools-doc
 BuildRequires : libgcrypt-dev
+Patch1: trim.patch
 
 %description
 This is a random number generator daemon.
@@ -56,9 +57,14 @@ extras components for the rng-tools package.
 
 %prep
 %setup -q -n rng-tools-5
+%patch1 -p1
 
 %build
 export LANG=C
+export CFLAGS="$CFLAGS -Os -ffunction-sections "
+export FCFLAGS="$CFLAGS -Os -ffunction-sections "
+export FFLAGS="$CFLAGS -Os -ffunction-sections "
+export CXXFLAGS="$CXXFLAGS -Os -ffunction-sections "
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 

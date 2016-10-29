@@ -1,0 +1,19 @@
+--- rng-tools-5/rngd_linux.c~	2012-08-06 17:04:12.000000000 +0000
++++ rng-tools-5/rngd_linux.c	2016-10-29 12:23:35.426303901 +0000
+@@ -42,6 +42,7 @@
+ #include <linux/types.h>
+ #include <linux/random.h>
+ #include <string.h>
++#include <malloc.h>
+ 
+ #include "rngd.h"
+ #include "fips.h"
+@@ -143,7 +144,7 @@
+ 		fd:	random_fd,
+ 		events:	POLLOUT,
+ 	};
+-
++	malloc_trim(0);
+ 	poll(&pfd, 1, -1);
+ }
+ 
