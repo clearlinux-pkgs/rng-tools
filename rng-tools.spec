@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 6
+Release  : 7
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -14,7 +14,6 @@ License  : GPL-2.0
 Requires: rng-tools-bin
 Requires: rng-tools-config
 Requires: rng-tools-doc
-BuildRequires : libgcrypt-dev
 Patch1: trim.patch
 
 %description
