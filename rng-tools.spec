@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 9
+Release  : 10
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -62,7 +62,7 @@ doc components for the rng-tools package.
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1489075999
+export SOURCE_DATE_EPOCH=1489076074
 export CFLAGS="$CFLAGS -Os -ffunction-sections "
 export FCFLAGS="$CFLAGS -Os -ffunction-sections "
 export FFLAGS="$CFLAGS -Os -ffunction-sections "
@@ -78,7 +78,7 @@ export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1489075999
+export SOURCE_DATE_EPOCH=1489076074
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
