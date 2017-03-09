@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 8
+Release  : 9
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -62,7 +62,7 @@ doc components for the rng-tools package.
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1489075924
+export SOURCE_DATE_EPOCH=1489075999
 export CFLAGS="$CFLAGS -Os -ffunction-sections "
 export FCFLAGS="$CFLAGS -Os -ffunction-sections "
 export FFLAGS="$CFLAGS -Os -ffunction-sections "
@@ -78,16 +78,14 @@ export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1489075924
+export SOURCE_DATE_EPOCH=1489075999
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/rngd.service
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rngd.service
-ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/rngd.service
 ## make_install_append end
 
 %files
@@ -106,7 +104,6 @@ ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/update-triggers.targe
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system/multi-user.target.wants/rngd.service
 /usr/lib/systemd/system/rngd.service
-/usr/lib/systemd/system/update-triggers.target.wants/rngd.service
 
 %files doc
 %defattr(-,root,root,-)
