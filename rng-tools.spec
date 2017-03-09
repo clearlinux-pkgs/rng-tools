@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 7
+Release  : 8
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -15,11 +15,20 @@ Requires: rng-tools-bin
 Requires: rng-tools-config
 Requires: rng-tools-doc
 Patch1: trim.patch
+Patch2: feed-more.patch
 
 %description
 This is a random number generator daemon.
 It monitors a hardware random number generator, and supplies entropy
 from that to the system kernel's /dev/random machinery.
+
+%package autostart
+Summary: autostart components for the rng-tools package.
+Group: Default
+
+%description autostart
+autostart components for the rng-tools package.
+
 
 %package bin
 Summary: bin components for the rng-tools package.
@@ -46,20 +55,14 @@ Group: Documentation
 doc components for the rng-tools package.
 
 
-%package extras
-Summary: extras components for the rng-tools package.
-Group: Default
-
-%description extras
-extras components for the rng-tools package.
-
-
 %prep
 %setup -q -n rng-tools-5
 %patch1 -p1
+%patch2 -p1
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1489075924
 export CFLAGS="$CFLAGS -Os -ffunction-sections "
 export FCFLAGS="$CFLAGS -Os -ffunction-sections "
 export FFLAGS="$CFLAGS -Os -ffunction-sections "
@@ -75,6 +78,7 @@ export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
+export SOURCE_DATE_EPOCH=1489075924
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
@@ -88,6 +92,10 @@ ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/update-triggers.targe
 
 %files
 %defattr(-,root,root,-)
+
+%files autostart
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/multi-user.target.wants/rngd.service
 
 %files bin
 %defattr(-,root,root,-)
@@ -104,7 +112,3 @@ ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/update-triggers.targe
 %defattr(-,root,root,-)
 %doc /usr/share/man/man1/*
 %doc /usr/share/man/man8/*
-
-%files extras
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/multi-user.target.wants/rngd.service
