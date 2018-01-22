@@ -1,2 +1,4 @@
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rngd.service
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/rngd.service %{buildroot}/usr/share/clr-service-restart/rngd.service
