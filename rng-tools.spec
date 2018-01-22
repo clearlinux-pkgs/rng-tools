@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 15
+Release  : 16
 URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -13,6 +13,7 @@ Group    : Development/Tools
 License  : GPL-2.0
 Requires: rng-tools-bin
 Requires: rng-tools-config
+Requires: rng-tools-data
 Requires: rng-tools-doc
 Patch1: trim.patch
 Patch2: feed-more.patch
@@ -33,6 +34,7 @@ autostart components for the rng-tools package.
 %package bin
 Summary: bin components for the rng-tools package.
 Group: Binaries
+Requires: rng-tools-data
 Requires: rng-tools-config
 
 %description bin
@@ -45,6 +47,14 @@ Group: Default
 
 %description config
 config components for the rng-tools package.
+
+
+%package data
+Summary: data components for the rng-tools package.
+Group: Data
+
+%description data
+data components for the rng-tools package.
 
 
 %package doc
@@ -65,16 +75,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493604097
+export SOURCE_DATE_EPOCH=1516647061
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
 %configure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %check
 export LANG=C
@@ -84,7 +94,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1493604097
+export SOURCE_DATE_EPOCH=1516647061
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
@@ -92,6 +102,8 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/rngd.service
 ## make_install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rngd.service
+mkdir -p %{buildroot}/usr/share/clr-service-restart
+ln -sf /usr/lib/systemd/system/rngd.service %{buildroot}/usr/share/clr-service-restart/rngd.service
 ## make_install_append end
 
 %files
@@ -110,6 +122,10 @@ ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wan
 %defattr(-,root,root,-)
 %exclude /usr/lib/systemd/system/multi-user.target.wants/rngd.service
 /usr/lib/systemd/system/rngd.service
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/clr-service-restart/rngd.service
 
 %files doc
 %defattr(-,root,root,-)
