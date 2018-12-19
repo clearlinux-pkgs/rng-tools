@@ -4,17 +4,18 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 18
-URL      : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
-Source0  : http://downloads.sourceforge.net/project/gkernel/rng-tools/5/rng-tools-5.tar.gz
+Release  : 19
+URL      : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
+Source0  : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: rng-tools-bin
-Requires: rng-tools-config
-Requires: rng-tools-data
-Requires: rng-tools-doc
+Requires: rng-tools-bin = %{version}-%{release}
+Requires: rng-tools-data = %{version}-%{release}
+Requires: rng-tools-license = %{version}-%{release}
+Requires: rng-tools-man = %{version}-%{release}
+Requires: rng-tools-services = %{version}-%{release}
 Patch1: trim.patch
 Patch2: feed-more.patch
 
@@ -34,19 +35,13 @@ autostart components for the rng-tools package.
 %package bin
 Summary: bin components for the rng-tools package.
 Group: Binaries
-Requires: rng-tools-data
-Requires: rng-tools-config
+Requires: rng-tools-data = %{version}-%{release}
+Requires: rng-tools-license = %{version}-%{release}
+Requires: rng-tools-man = %{version}-%{release}
+Requires: rng-tools-services = %{version}-%{release}
 
 %description bin
 bin components for the rng-tools package.
-
-
-%package config
-Summary: config components for the rng-tools package.
-Group: Default
-
-%description config
-config components for the rng-tools package.
 
 
 %package data
@@ -57,12 +52,28 @@ Group: Data
 data components for the rng-tools package.
 
 
-%package doc
-Summary: doc components for the rng-tools package.
-Group: Documentation
+%package license
+Summary: license components for the rng-tools package.
+Group: Default
 
-%description doc
-doc components for the rng-tools package.
+%description license
+license components for the rng-tools package.
+
+
+%package man
+Summary: man components for the rng-tools package.
+Group: Default
+
+%description man
+man components for the rng-tools package.
+
+
+%package services
+Summary: services components for the rng-tools package.
+Group: Systemd services
+
+%description services
+services components for the rng-tools package.
 
 
 %prep
@@ -75,7 +86,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1516647061
+export SOURCE_DATE_EPOCH=1545262571
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -94,17 +105,19 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1516647061
+export SOURCE_DATE_EPOCH=1545262571
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/rng-tools
+cp COPYING %{buildroot}/usr/share/package-licenses/rng-tools/COPYING
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/rngd.service
-## make_install_append content
+## install_append content
 mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
 ln -sf ../rngd.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/rngd.service
 mkdir -p %{buildroot}/usr/share/clr-service-restart
 ln -sf /usr/lib/systemd/system/rngd.service %{buildroot}/usr/share/clr-service-restart/rngd.service
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -118,16 +131,20 @@ ln -sf /usr/lib/systemd/system/rngd.service %{buildroot}/usr/share/clr-service-r
 /usr/bin/rngd
 /usr/bin/rngtest
 
-%files config
-%defattr(-,root,root,-)
-%exclude /usr/lib/systemd/system/multi-user.target.wants/rngd.service
-/usr/lib/systemd/system/rngd.service
-
 %files data
 %defattr(-,root,root,-)
 /usr/share/clr-service-restart/rngd.service
 
-%files doc
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/rng-tools/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/rngtest.1
+/usr/share/man/man8/rngd.8
+
+%files services
 %defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
-%doc /usr/share/man/man8/*
+%exclude /usr/lib/systemd/system/multi-user.target.wants/rngd.service
+/usr/lib/systemd/system/rngd.service
