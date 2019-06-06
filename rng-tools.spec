@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 22
+Release  : 23
 URL      : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source0  : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
