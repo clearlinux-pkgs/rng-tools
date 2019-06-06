@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 20
+Release  : 22
 URL      : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source0  : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
@@ -16,6 +16,7 @@ Requires: rng-tools-data = %{version}-%{release}
 Requires: rng-tools-license = %{version}-%{release}
 Requires: rng-tools-man = %{version}-%{release}
 Requires: rng-tools-services = %{version}-%{release}
+BuildRequires : glibc-staticdev
 Patch1: trim.patch
 Patch2: feed-more.patch
 
@@ -37,7 +38,6 @@ Summary: bin components for the rng-tools package.
 Group: Binaries
 Requires: rng-tools-data = %{version}-%{release}
 Requires: rng-tools-license = %{version}-%{release}
-Requires: rng-tools-man = %{version}-%{release}
 Requires: rng-tools-services = %{version}-%{release}
 
 %description bin
@@ -86,7 +86,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1546571430
+export SOURCE_DATE_EPOCH=1559831097
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -95,7 +95,7 @@ export FCFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sec
 export FFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
 export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
 %configure --disable-static
-make  %{?_smp_mflags}
+make  %{?_smp_mflags} CFLAGS="$CFLAGS -static"
 
 %check
 export LANG=C
@@ -105,7 +105,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1546571430
+export SOURCE_DATE_EPOCH=1559831097
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rng-tools
 cp COPYING %{buildroot}/usr/share/package-licenses/rng-tools/COPYING
