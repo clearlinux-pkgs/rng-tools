@@ -4,11 +4,11 @@
 #
 Name     : rng-tools
 Version  : 5
-Release  : 23
+Release  : 24
 URL      : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source0  : https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
 Source1  : rngd.service
-Summary  : Random number generator related utilities
+Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: rng-tools-bin = %{version}-%{release}
@@ -78,6 +78,7 @@ services components for the rng-tools package.
 
 %prep
 %setup -q -n rng-tools-5
+cd %{_builddir}/rng-tools-5
 %patch1 -p1
 %patch2 -p1
 
@@ -85,30 +86,31 @@ services components for the rng-tools package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1559831097
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604603676
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
+export FCFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
+export FFLAGS="$FFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
 export CXXFLAGS="$CXXFLAGS -O3 -Os -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-semantic-interposition "
 %configure --disable-static
-make  %{?_smp_mflags} CFLAGS="$CFLAGS -static"
+make  %{?_smp_mflags}  CFLAGS="$CFLAGS -static"
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1559831097
+export SOURCE_DATE_EPOCH=1604603676
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/rng-tools
-cp COPYING %{buildroot}/usr/share/package-licenses/rng-tools/COPYING
+cp %{_builddir}/rng-tools-5/COPYING %{buildroot}/usr/share/package-licenses/rng-tools/c0791ab9a14a9594782a52ce5921ce57deaad95f
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/rngd.service
@@ -137,7 +139,7 @@ ln -sf /usr/lib/systemd/system/rngd.service %{buildroot}/usr/share/clr-service-r
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/rng-tools/COPYING
+/usr/share/package-licenses/rng-tools/c0791ab9a14a9594782a52ce5921ce57deaad95f
 
 %files man
 %defattr(0644,root,root,0755)
