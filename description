@@ -1,0 +1,3 @@
+This is a random number generator daemon. It monitors a hardware random number
+generator, and supplies entropy from that to the system kernel's /dev/random
+machinery.

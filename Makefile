@@ -1,5 +1,5 @@
 PKG_NAME := rng-tools
-URL = https://sourceforge.net/projects/gkernel/files/rng-tools/5/rng-tools-5.tar.gz
+URL = https://github.com/nhorman/rng-tools/archive/v6.12/rng-tools-6.12.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common

@@ -1,13 +1,15 @@
---- rng-tools-5/rngd_linux.c~	2016-10-29 12:23:35.000000000 +0000
-+++ rng-tools-5/rngd_linux.c	2017-03-09 16:10:39.562644545 +0000
-@@ -140,12 +140,17 @@
+diff --git a/rngd_linux.c b/rngd_linux.c
+index bcc0418..1e3c61c 100644
+--- a/rngd_linux.c
++++ b/rngd_linux.c
+@@ -160,10 +160,15 @@ int random_add_entropy(void *buf, size_t size)
  
  void random_sleep(void)
  {
 +	static int ctr;
  	struct pollfd pfd = {
- 		fd:	random_fd,
- 		events:	POLLOUT,
+ 		.fd = random_fd,
+ 		.events = POLLOUT,
  	};
  	malloc_trim(0);
 -	poll(&pfd, 1, -1);
@@ -17,5 +19,3 @@
 +		ctr = 0;
 +	}
  }
- 
- void src_list_add(struct rng *ent_src)
