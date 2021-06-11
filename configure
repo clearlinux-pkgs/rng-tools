@@ -1,2 +1,3 @@
 --without-nistbeacon
 --without-pkcs11
+--without-rtlsdr
