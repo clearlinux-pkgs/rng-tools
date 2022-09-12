@@ -4,7 +4,7 @@
 #
 Name     : rng-tools
 Version  : 6.15
-Release  : 28
+Release  : 29
 URL      : https://github.com/nhorman/rng-tools/archive/v6.15/rng-tools-6.15.tar.gz
 Source0  : https://github.com/nhorman/rng-tools/archive/v6.15/rng-tools-6.15.tar.gz
 Source1  : rngd.service
