@@ -3,3 +3,4 @@
 # libgpg-error-dev
 glibc-staticdev
 libgcrypt-dev
+jansson-dev
